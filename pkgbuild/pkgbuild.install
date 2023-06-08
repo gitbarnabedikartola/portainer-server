@@ -3,20 +3,26 @@
 	# do something here
 #}
 
-## arg 1:  the new package version
-#post_install() {
-    # do something here
-#}
+# arg 1:  the new package version
+post_install() {
+  docker run -d \
+  -p 9001:9001 \
+  --name portainer_agent \
+  --restart=always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /var/lib/docker/volumes:/var/lib/docker/volumes \
+  portainer/agent:2.18.3
+}
 
 ## arg 2:  the old package version
 #pre_upgrade() {
 	# do something here
 #}
 
-## arg 2:  the old package version
-#post_upgrade() {
-	#post_install
-#}
+# arg 2:  the old package version
+post_upgrade() {
+	post_install
+}
 
 ## arg 1:  the old package version
 #pre_remove() {
